@@ -1,0 +1,210 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,text/javascript
+    min-response-size: 1024
+
+spring:
+  application:
+    name: supply-chain-graph-service
+  
+  # Neo4j Configuration
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: password
+    connection:
+      pool:
+        max-connection-pool-size: 50
+        connection-acquisition-timeout: 60s
+        max-connection-lifetime: 1h
+        connection-timeout: 30s
+      logging:
+        level: INFO
+  
+  # Data Neo4j Configuration
+  data:
+    neo4j:
+      repositories:
+        type: reactive
+      database: neo4j
+  
+  # Jackson JSON Configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+  
+  # Async Processing Configuration
+  task:
+    execution:
+      pool:
+        core-size: 10
+        max-size: 50
+        queue-capacity: 100
+        keep-alive: 60s
+    scheduling:
+      pool:
+        size: 5
+
+# Management and Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus,env
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.50,0.95,0.99
+      slo:
+        http.server.requests: 100ms,200ms,500ms,1s,2s
+
+# OpenAPI/Swagger Documentation
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    display-request-duration: true
+    display-operation-id: true
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: true
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.jefferies.supplychain: DEBUG
+    org.neo4j.driver: INFO
+    org.springframework.data.neo4j: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/supply-chain-graph-service.log
+    max-size: 100MB
+    max-history: 30
+
+# Application-specific Configuration
+app:
+  graph:
+    analytics:
+      default-result-limit: 20
+      max-pathfinding-hops: 10
+      centrality-cache-ttl: 3600  # 1 hour in seconds
+      community-detection-max-iterations: 10
+      graph-projection-name: "supply_chain_graph"
+  
+  etl:
+    batch-size: 1000
+    retry-attempts: 3
+    timeout-seconds: 300
+  
+  mcp:
+    enabled: true
+    agent-timeout-seconds: 30
+    max-concurrent-requests: 10
+
+# Profile-specific configurations
+---
+spring:
+  config:
+    activate:
+      on-profile: development
+  
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: development
+
+logging:
+  level:
+    com.jefferies.supplychain: DEBUG
+    org.springframework.data.neo4j: DEBUG
+
+app:
+  graph:
+    analytics:
+      default-result-limit: 10
+
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  
+  neo4j:
+    uri: ${NEO4J_URI:bolt://neo4j-cluster:7687}
+    authentication:
+      username: ${NEO4J_USERNAME:neo4j}
+      password: ${NEO4J_PASSWORD}
+    connection:
+      pool:
+        max-connection-pool-size: 100
+        connection-acquisition-timeout: 30s
+
+server:
+  compression:
+    enabled: true
+
+logging:
+  level:
+    root: WARN
+    com.jefferies.supplychain: INFO
+  file:
+    name: /app/logs/supply-chain-graph-service.log
+
+management:
+  endpoint:
+    health:
+      show-details: when-authorized
+
+app:
+  graph:
+    analytics:
+      default-result-limit: 50
+      centrality-cache-ttl: 7200  # 2 hours
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  
+  neo4j:
+    uri: bolt://localhost:7688  # Test container port
+    authentication:
+      username: neo4j
+      password: testpassword
+
+logging:
+  level:
+    root: WARN
+    com.jefferies.supplychain: DEBUG
+
+app:
+  graph:
+    analytics:
+      default-result-limit: 5
