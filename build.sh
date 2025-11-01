@@ -123,19 +123,212 @@ run_etl() {
 
 # Function to run tests
 run_tests() {
-    print_info "Running tests..."
+    local test_type=${1:-all}
+    print_info "Running tests (type: $test_type)..."
     
-    # Java tests
+    case "$test_type" in
+        "java"|"j")
+            run_java_tests
+            ;;
+        "python"|"py")
+            run_python_tests
+            ;;
+        "integration"|"int")
+            run_integration_tests
+            ;;
+        "performance"|"perf")
+            run_performance_tests
+            ;;
+        "unit"|"u")
+            run_unit_tests
+            ;;
+        "all"|*)
+            run_all_tests
+            ;;
+    esac
+}
+
+# Function to run Java tests
+run_java_tests() {
     print_info "Running Java tests..."
     cd java-spring-service
-    ./mvnw test
+    
+    # Unit tests
+    print_info "Running Java unit tests..."
+    ./mvnw test -Dtest="**/*Test"
+    
+    # Integration tests (with TestContainers)
+    print_info "Running Java integration tests..."
+    ./mvnw verify -Dtest="**/*IT"
+    
+    # Generate test reports
+    print_info "Generating Java test reports..."
+    ./mvnw jacoco:report
+    
+    cd ..
+    print_success "Java tests completed"
+}
+
+# Function to run Python tests
+run_python_tests() {
+    print_info "Running Python tests..."
+    
+    # Ensure core services are running for integration tests
+    if ! docker-compose ps | grep -q "neo4j.*healthy"; then
+        print_warning "Starting Neo4j for Python integration tests..."
+        docker-compose up -d neo4j
+        wait_for_service "neo4j"
+    fi
+    
+    # Run all Python tests with coverage
+    print_info "Running Python tests with coverage..."
+    docker-compose --profile etl run --rm python-etl pytest tests/ \
+        --cov=src \
+        --cov-report=html:htmlcov \
+        --cov-report=xml:coverage.xml \
+        --cov-report=term-missing \
+        --junit-xml=test-results.xml \
+        -v
+    
+    print_success "Python tests completed"
+}
+
+# Function to run integration tests only
+run_integration_tests() {
+    print_info "Running integration tests..."
+    
+    # Start required services
+    start_core
+    
+    # Java integration tests
+    print_info "Running Java integration tests..."
+    cd java-spring-service
+    ./mvnw verify -Dtest="**/*IT"
     cd ..
     
-    # Python tests
-    print_info "Running Python tests..."
-    docker-compose --profile etl run --rm python-etl pytest tests/ -v
+    # Python integration tests
+    print_info "Running Python integration tests..."
+    docker-compose --profile etl run --rm python-etl pytest tests/integration/ \
+        --junit-xml=integration-test-results.xml \
+        -v
     
-    print_success "All tests passed"
+    print_success "Integration tests completed"
+}
+
+# Function to run performance tests
+run_performance_tests() {
+    print_info "Running performance tests..."
+    
+    # Start services with optimized configuration
+    start_core
+    
+    # Java performance tests
+    print_info "Running Java performance tests..."
+    cd java-spring-service
+    ./mvnw test -Dtest="**/*PerformanceTest" -Dspring.profiles.active=test
+    cd ..
+    
+    # Python performance tests with benchmarking
+    print_info "Running Python performance benchmarks..."
+    docker-compose --profile etl run --rm python-etl pytest tests/performance/ \
+        --benchmark-json=benchmark-results.json \
+        --benchmark-min-rounds=5 \
+        --benchmark-autosave \
+        -v
+    
+    print_success "Performance tests completed"
+}
+
+# Function to run unit tests only
+run_unit_tests() {
+    print_info "Running unit tests only..."
+    
+    # Java unit tests
+    print_info "Running Java unit tests..."
+    cd java-spring-service
+    ./mvnw test -Dtest="**/*Test" -DexcludedGroups="integration"
+    cd ..
+    
+    # Python unit tests
+    print_info "Running Python unit tests..."
+    docker-compose --profile etl run --rm python-etl pytest tests/unit/ \
+        --junit-xml=unit-test-results.xml \
+        -v
+    
+    print_success "Unit tests completed"
+}
+
+# Function to run all tests
+run_all_tests() {
+    print_info "Running complete test suite..."
+    
+    # Start services
+    start_core
+    
+    # Run tests in order
+    run_unit_tests
+    run_integration_tests
+    
+    # Generate combined coverage report
+    print_info "Generating combined test reports..."
+    cd java-spring-service
+    ./mvnw jacoco:report
+    cd ..
+    
+    # Generate test summary
+    generate_test_summary
+    
+    print_success "All tests completed successfully"
+}
+
+# Function to generate test summary
+generate_test_summary() {
+    print_info "Generating test summary..."
+    
+    echo "=== TEST SUMMARY ===" > test-summary.txt
+    echo "Generated: $(date)" >> test-summary.txt
+    echo "" >> test-summary.txt
+    
+    # Java test results
+    if [ -f "java-spring-service/target/surefire-reports/TEST-*.xml" ]; then
+        echo "Java Unit Tests:" >> test-summary.txt
+        grep -h "tests=" java-spring-service/target/surefire-reports/TEST-*.xml | head -1 >> test-summary.txt
+        echo "" >> test-summary.txt
+    fi
+    
+    # Python test results
+    if [ -f "test-results.xml" ]; then
+        echo "Python Tests:" >> test-summary.txt
+        grep "testsuite" test-results.xml | head -1 >> test-summary.txt
+        echo "" >> test-summary.txt
+    fi
+    
+    # Coverage information
+    echo "Coverage Reports:" >> test-summary.txt
+    echo "- Java: java-spring-service/target/site/jacoco/index.html" >> test-summary.txt
+    echo "- Python: htmlcov/index.html" >> test-summary.txt
+    echo "" >> test-summary.txt
+    
+    print_success "Test summary generated: test-summary.txt"
+}
+
+# Function to validate code quality
+run_code_quality() {
+    print_info "Running code quality checks..."
+    
+    # Java code quality
+    print_info "Running Java code quality checks..."
+    cd java-spring-service
+    ./mvnw checkstyle:check spotbugs:check
+    cd ..
+    
+    # Python code quality
+    print_info "Running Python code quality checks..."
+    docker-compose --profile etl run --rm python-etl flake8 src/
+    docker-compose --profile etl run --rm python-etl black --check src/
+    docker-compose --profile etl run --rm python-etl mypy src/
+    
+    print_success "Code quality checks completed"
 }
 
 # Function to start monitoring
