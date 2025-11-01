@@ -21,9 +21,16 @@
     <properties>
         <java.version>17</java.version>
         <neo4j-java-driver.version>5.15.0</neo4j-java-driver.version>
-        <spring-data-neo4j.version>7.2.0</spring-data-neo4j.version>
+
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>neo4j-releases</id>
+            <url>https://m2.neo4j.org/content/repositories/releases/</url>
+        </repository>
+    </repositories>
     
     <dependencies>
         <!-- Spring Boot Starters -->
@@ -53,18 +60,9 @@
             <artifactId>spring-boot-starter-data-neo4j</artifactId>
         </dependency>
         
-        <dependency>
-            <groupId>org.neo4j.driver</groupId>
-            <artifactId>neo4j-java-driver</artifactId>
-            <version>${neo4j-java-driver.version}</version>
-        </dependency>
+
         
-        <!-- Graph Data Science Client -->
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-graph-data-science-client</artifactId>
-            <version>2.5.0</version>
-        </dependency>
+        <!-- Graph Data Science Client - Removed due to repository access issues -->
         
         <!-- JSON Processing -->
         <dependency>
@@ -131,11 +129,7 @@
         </dependency>
         
         <!-- Mocking Framework -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-inline</artifactId>
-            <scope>test</scope>
-        </dependency>
+
         
         <!-- Performance Testing -->
         <dependency>
