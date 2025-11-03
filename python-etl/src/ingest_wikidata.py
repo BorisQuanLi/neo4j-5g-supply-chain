@@ -234,7 +234,7 @@ class WikidataIngester:
           }}
           
           # Filter for companies likely in 5G supply chain
-          FILTER(REGEX(?companyLabel, "(Apple|Samsung|Qualcomm|ARM|MediaTek|Broadcom|Intel|TSMC|Foxconn|Huawei|Nokia|Ericsson)", "i"))
+          FILTER(REGEX(?companyLabel, "(Apple|Samsung|Qualcomm|ARM|MediaTek|Broadcom|Intel|TSMC|Foxconn|Xiaomi|Nokia|Ericsson)", "i"))
         }}
         ORDER BY ?companyLabel
         LIMIT {limit}
@@ -461,7 +461,7 @@ async def run_wikidata_ingestion_pipeline():
             # Step 2: Search for specific 5G supply chain companies
             specific_companies = [
                 "Apple Inc", "Samsung Electronics", "Qualcomm", "ARM Holdings",
-                "MediaTek", "Broadcom", "Intel", "TSMC", "Foxconn", "Huawei"
+                "MediaTek", "Broadcom", "Intel", "TSMC", "Foxconn", "Xiaomi"
             ]
             
             logger.info("Searching for specific supply chain companies...")
