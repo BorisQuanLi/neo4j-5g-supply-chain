@@ -555,7 +555,7 @@ async def create_sample_data(client: Neo4jClient) -> Dict[str, Any]:
         ),
         CompanyEntity(
             permid=4295906830,
-            name="Qualcomm Inc",
+            name="QCOM (Qualcomm Inc)",
             is_final_assembler=False,
             match_score=0.92,
             industry_sector="Technology",
@@ -592,6 +592,26 @@ async def create_sample_data(client: Neo4jClient) -> Dict[str, Any]:
             country="Taiwan",
             market_cap=40000000000,  # 40B
             revenue=180000000000  # 180B
+        ),
+        CompanyEntity(
+            permid=4295908005,
+            name="Xiaomi Corporation",
+            is_final_assembler=True,
+            match_score=0.88,
+            industry_sector="Technology",
+            country="China",
+            market_cap=45000000000,  # 45B
+            revenue=42000000000  # 42B
+        ),
+        CompanyEntity(
+            permid=4295871234,
+            name="TSM (Taiwan Semiconductor Manufacturing Co Ltd)",
+            is_final_assembler=False,
+            match_score=0.95,
+            industry_sector="Technology",
+            country="Taiwan",
+            market_cap=500000000000,  # 500B
+            revenue=70000000000  # 70B
         )
     ]
     
@@ -603,8 +623,11 @@ async def create_sample_data(client: Neo4jClient) -> Dict[str, Any]:
         ("ARM Holdings", "Qualcomm Inc"),
         ("ARM Holdings", "MediaTek"),
         ("Qualcomm Inc", "Apple Inc"),
+        ("Qualcomm Inc", "Xiaomi Corporation"),
         ("MediaTek", "Samsung Electronics Co"),
+        ("MediaTek", "Xiaomi Corporation"),
         ("Foxconn", "Apple Inc"),
+        ("Foxconn", "Xiaomi Corporation"),
         ("Samsung Electronics Co", "Apple Inc")  # Components supplier
     ]
     
@@ -614,6 +637,8 @@ async def create_sample_data(client: Neo4jClient) -> Dict[str, Any]:
     competition_relationships = [
         RelationshipData("Apple Inc", "Samsung Electronics Co", "COMPETES_WITH", 
                         {"strength": 0.9, "market_segment": "smartphones"}),
+        RelationshipData("Samsung Electronics Co", "Xiaomi Corporation", "COMPETES_WITH", 
+                        {"strength": 0.8, "market_segment": "smartphones"}),
         RelationshipData("Qualcomm Inc", "MediaTek", "COMPETES_WITH", 
                         {"strength": 0.8, "market_segment": "mobile_chips"})
     ]

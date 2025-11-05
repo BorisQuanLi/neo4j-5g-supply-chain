@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a comprehensive graph analytics platform for supply chain analysis, building on the 2020 5G mobile supply chain research. The platform serves as a foundation for financial services use cases at Jefferies Securities, demonstrating graph database technologies, ETL pipelines, and modern AI integration patterns.
+This project implements a comprehensive graph analytics platform for supply chain analysis, leveraging current smartphone market leaders (Apple, Samsung, Xiaomi) based on Q4 2023-Q2 2025 global market share data. The platform demonstrates enterprise-grade graph database technologies, ETL pipelines, and modern AI integration patterns for financial services applications.
 
 ## Architecture
 
@@ -55,7 +55,7 @@ neo4j-5g-supply-chain/
 
 ## Key Features
 
-### Graph Analytics (From 2020 Research)
+### Graph Analytics Capabilities
 - **Pathfinding & Search**: Shortest path algorithms for supply chain alternatives
 - **Centrality Analysis**: Identification of critical nodes (e.g., ARM Holdings)
 - **Community Detection**: Clustering of related entities and supply networks
@@ -83,26 +83,39 @@ neo4j-5g-supply-chain/
 
 ## Getting Started
 
+📖 **[Quick Start Guide](docs/QUICK_START.md)** | 🏗️ **[Architecture Overview](docs/ARCHITECTURE.md)** | 🎯 **[Use Cases](docs/USE_CASES.md)**
+
 ### Prerequisites
 - Docker & Docker Compose
-- Java 17+ (for development)
-- Python 3.9+ (for development)
-- Neo4j Desktop (optional, for local development)
+- 8GB+ RAM recommended
+- Ports 7474, 7687, 8080, 8081 available
 
 ### Quick Start
 ```bash
-# Clone and setup
-git clone <repository-url>
-cd neo4j-5g-supply-chain
-
 # Start all services
 docker-compose up -d
 
-# Initialize sample data
-python python-etl/src/graph_builder.py --sample-data
+# Load demo data
+./demos/neo4j-graph-analytics/setup-5g-supply-chain-demo.sh
 
-# Verify services
-curl http://localhost:8080/api/v1/health
+# Access Neo4j Browser
+open http://localhost:7474  # neo4j/password
+```
+
+### Impressive Demo Queries
+Once in Neo4j Browser, try these queries to explore the market dynamics:
+
+```cypher
+// Samsung-Apple Frenemy: Competitors who depend on each other
+MATCH (samsung:Company {name: 'Samsung Electronics Co Ltd'})-[r]-(apple:Company {name: 'Apple Inc'}) 
+RETURN samsung, r, apple;
+
+// Complete supply chain network
+MATCH (n:Company) OPTIONAL MATCH (n)-[r]-(m:Company) RETURN n, r, m;
+
+// Market leaders by market capitalization
+MATCH (c:Company) WHERE c.is_final_assembler = true 
+RETURN c.name, c.market_cap, c.country ORDER BY c.market_cap DESC;
 ```
 
 ## Financial Services Use Cases
@@ -150,5 +163,5 @@ Ready to proceed with implementation. Please confirm:
 
 ---
 
-*Built for Jefferies Securities Graph Data Engineer role demonstration*
+*Enterprise Graph Analytics Platform*
 *Showcasing Neo4j, Java Spring Boot, Python ETL, and modern AI integration*
