@@ -1,0 +1,174 @@
+[
+  {
+    "source_permid": 4295905573,
+    "source_name": "Apple Inc",
+    "target_permid": 4295906319,
+    "target_name": "QUALCOMM Inc",
+    "relationship_type": "SUPPLY_COMPONENTS",
+    "properties": {
+      "component_type": "5G Modem Chips",
+      "strength": 0.85,
+      "contract_value": 3000000000,
+      "start_date": "2019-04-16",
+      "end_date": "2026-12-31",
+      "exclusivity": false,
+      "geographic_scope": "Global"
+    },
+    "data_source": "BLOOMBERG",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295905573,
+    "source_name": "Apple Inc",
+    "target_permid": 4295871234,
+    "target_name": "Taiwan Semiconductor Manufacturing Co Ltd",
+    "relationship_type": "MANUFACTURING_PARTNER",
+    "properties": {
+      "component_type": "A-Series Processors",
+      "strength": 0.95,
+      "contract_value": 15000000000,
+      "start_date": "2014-01-01",
+      "end_date": "2027-12-31",
+      "exclusivity": true,
+      "process_node": "3nm"
+    },
+    "data_source": "INDUSTRY_REPORTS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295877456,
+    "source_name": "Samsung Electronics Co Ltd",
+    "target_permid": 4295903847,
+    "target_name": "ARM Holdings plc",
+    "relationship_type": "DESIGN_CHIPS_FOR",
+    "properties": {
+      "component_type": "Exynos Processors",
+      "strength": 0.88,
+      "license_value": 500000000,
+      "start_date": "2011-01-01",
+      "architecture": "ARMv9",
+      "license_type": "Perpetual"
+    },
+    "data_source": "PATENT_FILINGS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295906319,
+    "source_name": "QUALCOMM Inc",
+    "target_permid": 4295903847,
+    "target_name": "ARM Holdings plc",
+    "relationship_type": "DESIGN_CHIPS_FOR",
+    "properties": {
+      "component_type": "Snapdragon Processors",
+      "strength": 0.92,
+      "license_value": 1200000000,
+      "start_date": "2006-01-01",
+      "architecture": "ARMv9",
+      "license_type": "Perpetual"
+    },
+    "data_source": "SEC_FILINGS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295871234,
+    "source_name": "Taiwan Semiconductor Manufacturing Co Ltd",
+    "target_permid": 4295903847,
+    "target_name": "ARM Holdings plc",
+    "relationship_type": "MANUFACTURING_PARTNER",
+    "properties": {
+      "component_type": "ARM-based Chips",
+      "strength": 0.90,
+      "manufacturing_volume": 500000000,
+      "start_date": "2010-01-01",
+      "process_nodes": ["3nm", "5nm", "7nm"],
+      "geographic_scope": "Asia-Pacific"
+    },
+    "data_source": "SUPPLY_CHAIN_ANALYSIS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295905573,
+    "source_name": "Apple Inc",
+    "target_permid": 4295834567,
+    "target_name": "Hon Hai Precision Industry Co Ltd",
+    "relationship_type": "ASSEMBLY_PARTNER",
+    "properties": {
+      "component_type": "iPhone Assembly",
+      "strength": 0.93,
+      "assembly_volume": 200000000,
+      "start_date": "2007-01-01",
+      "geographic_scope": "China",
+      "exclusivity": false
+    },
+    "data_source": "SUPPLY_CHAIN_REPORTS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295877456,
+    "source_name": "Samsung Electronics Co Ltd",
+    "target_permid": 4295905573,
+    "target_name": "Apple Inc",
+    "relationship_type": "COMPETES_WITH",
+    "properties": {
+      "market_segment": "Smartphones",
+      "strength": 0.95,
+      "competition_intensity": "High",
+      "shared_suppliers": 15,
+      "market_overlap": 0.85,
+      "geographic_scope": "Global"
+    },
+    "data_source": "MARKET_ANALYSIS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295865678,
+    "source_name": "Broadcom Inc",
+    "target_permid": 4295905573,
+    "target_name": "Apple Inc",
+    "relationship_type": "SUPPLY_COMPONENTS",
+    "properties": {
+      "component_type": "WiFi and Bluetooth Chips",
+      "strength": 0.78,
+      "contract_value": 1500000000,
+      "start_date": "2017-01-01",
+      "end_date": "2025-12-31",
+      "exclusivity": false
+    },
+    "data_source": "BLOOMBERG",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295823456,
+    "source_name": "MediaTek Inc",
+    "target_permid": 4295877456,
+    "target_name": "Samsung Electronics Co Ltd",
+    "relationship_type": "SUPPLY_COMPONENTS",
+    "properties": {
+      "component_type": "5G Chipsets",
+      "strength": 0.72,
+      "contract_value": 800000000,
+      "start_date": "2020-01-01",
+      "end_date": "2025-12-31",
+      "market_segment": "Mid-range Smartphones"
+    },
+    "data_source": "INDUSTRY_REPORTS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  },
+  {
+    "source_permid": 4295906319,
+    "source_name": "QUALCOMM Inc",
+    "target_permid": 4295877456,
+    "target_name": "Samsung Electronics Co Ltd",
+    "relationship_type": "SUPPLY_COMPONENTS",
+    "properties": {
+      "component_type": "Premium 5G Chipsets",
+      "strength": 0.89,
+      "contract_value": 2500000000,
+      "start_date": "2018-01-01",
+      "end_date": "2026-12-31",
+      "market_segment": "Premium Smartphones"
+    },
+    "data_source": "SEC_FILINGS",
+    "last_updated": "2024-01-01T00:00:00Z"
+  }
+]

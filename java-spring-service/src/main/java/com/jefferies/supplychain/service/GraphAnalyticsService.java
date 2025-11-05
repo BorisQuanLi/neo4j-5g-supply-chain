@@ -274,18 +274,18 @@ public class GraphAnalyticsService {
             case "PATHFINDING" -> {
                 PathfindingRequest req = (PathfindingRequest) parameters;
                 yield CompletableFuture.completedFuture(
-                    findBackupSupplierRoutes(req.getSource(), req.getTarget())
+                    (Object) findBackupSupplierRoutes(req.getSource(), req.getTarget())
                 );
             }
             case "CENTRALITY" -> {
                 CentralityRequest req = (CentralityRequest) parameters;
-                yield analyzeCriticalNodes(req.getTopN());
+                yield analyzeCriticalNodes(req.getTopN()).thenApply(result -> (Object) result);
             }
-            case "COMMUNITY" -> detectSupplyChainCommunities();
+            case "COMMUNITY" -> detectSupplyChainCommunities().thenApply(result -> (Object) result);
             case "VULNERABILITY" -> {
                 VulnerabilityRequest req = (VulnerabilityRequest) parameters;
                 yield CompletableFuture.completedFuture(
-                    assessSupplyChainVulnerabilities(req.getMinImpact())
+                    (Object) assessSupplyChainVulnerabilities(req.getMinImpact())
                 );
             }
             default -> throw new IllegalArgumentException("Unknown analysis type: " + analysisType);
