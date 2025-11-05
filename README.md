@@ -102,9 +102,8 @@ docker-compose up -d
 open http://localhost:7474  # neo4j/password
 ```
 
-### Impressive Demo Queries
-Once in Neo4j Browser, try these queries to explore the market dynamics:
-
+### Explore the Knowledge Graph
+Once in the Neo4j Browser, use the following queries to explore the knowledge graph of the global 5G smartphone supply chain. Feel free to modify them or write your own to delve deeper.
 ```cypher
 // Samsung-Apple Frenemy: Competitors who depend on each other
 MATCH (samsung:Company {name: 'Samsung Electronics Co Ltd'})-[r]-(apple:Company {name: 'Apple Inc'}) 
@@ -118,22 +117,21 @@ MATCH (c:Company) WHERE c.is_final_assembler = true
 RETURN c.name, c.market_cap, c.country ORDER BY c.market_cap DESC;
 ```
 
-## Financial Services Use Cases
+## Financial Services Applications
 
-### 1. Fraud Detection
-- **Entity Resolution**: Match entities across multiple data sources
-- **Pattern Recognition**: Identify suspicious transaction networks
-- **Risk Propagation**: Analyze how risks spread through relationships
+This platform demonstrates foundational data engineering techniques that are crucial for various financial services applications. The current implementation showcases:
 
-### 2. Trading Strategy
-- **Market Intelligence**: Build knowledge graphs from news and research
-- **Relationship Analysis**: Uncover hidden connections between securities
-- **Scenario Modeling**: Simulate market impact through graph algorithms
+### 1. Knowledge Graph Construction & Data Integration
+- **Entity Resolution**: Merging company data from disparate sources (WIKIDATA, PermID) using fuzzy matching and rule-based logic to create a single, unified view of each entity.
+- **Data Ingestion Pipeline**: Building a robust ETL pipeline to ingest and model structured data from external APIs into a graph database.
+- **Relationship Analysis**: Modeling and analyzing complex relationships between companies, such as supply chain dependencies, competition, and partnerships.
 
-### 3. Compliance & Risk Management
-- **Regulatory Mapping**: Model compliance requirements as graph relationships
-- **Exposure Analysis**: Calculate counterparty risk through multi-hop relationships
-- **Audit Trails**: Track decision paths through interconnected data
+### 2. Potential Use Cases & Future Directions
+The data engineering foundation of this project can be extended to support more advanced financial use cases, including:
+
+- **Trading Strategy**: Enriching the knowledge graph with market data, news sentiment, and research to uncover alpha-generating insights and hidden connections between securities.
+- **Risk Management**: Modeling risk propagation through the supply chain, calculating counterparty exposure through multi-hop analysis, and identifying single points of failure.
+- **Compliance & Fraud Detection**: Integrating regulatory data to map compliance requirements and using graph algorithms to detect anomalous patterns indicative of fraud.
 
 ## Development Workflow
 
@@ -151,17 +149,17 @@ RETURN c.name, c.market_cap, c.country ORDER BY c.market_cap DESC;
 - **Monitoring**: Centralized logging and metrics collection
 - **Security**: Authentication/authorization across services
 
-## Next Steps
+## Roadmap: Future Enhancements
 
-Ready to proceed with implementation. Please confirm:
+This platform provides a solid foundation for a comprehensive graph data engineering and analytics solution. Future development is planned across several key areas:
 
-1. **Scope Priority**: Which component should we implement first? (Java API, Python ETL, or MCP agents?)
-2. **Data Sources**: Do you have specific APIs/datasets in mind beyond WIKIDATA and PermID?
-3. **Neo4j Deployment**: Local development vs. cloud-hosted (Neo4j Aura, AWS Neptune)?
-4. **MCP Integration**: Specific LLM providers or frameworks you prefer?
-5. **Financial Use Cases**: Which Jefferies-specific scenarios should we prioritize?
+-   **Advanced Financial Analytics**: Integrating more sophisticated financial models and analytics, such as advanced risk assessment and trading strategy analysis.
+
+-   **CI/CD and Automation**: Implementing a full CI/CD pipeline to automate testing, builds, and deployments, ensuring robustness and rapid iteration.
+
+-   **Cloud-Native Deployment**: Enhancing the deployment architecture with Kubernetes for scalable, resilient, and cloud-agnostic operation.
 
 ---
 
-*Enterprise Graph Analytics Platform*
+*Enterprise Graph Data Engineering Platform*
 *Showcasing Neo4j, Java Spring Boot, Python ETL, and modern AI integration*

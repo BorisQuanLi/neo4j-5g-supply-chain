@@ -15,13 +15,13 @@ open http://localhost:7474
 ### Option 2: Neo4j Desktop/Aura (Backup)
 1. Download Neo4j Desktop or create Neo4j Aura account
 2. Create new database
-3. Copy-paste queries from `neo4j-browser-demo.cypher`
+3. Copy-paste queries from `5g-supply-chain-knowledge-graph.cypher`
 
 ## Demo Presentation Flow
 
 ### 1. Data Loading (30 seconds)
 ```cypher
-// Copy-paste the CREATE statement from neo4j-browser-demo.cypher
+// Copy-paste the CREATE statement from 5g-supply-chain-knowledge-graph.cypher
 // Creates 6 companies + 8 relationships
 ```
 

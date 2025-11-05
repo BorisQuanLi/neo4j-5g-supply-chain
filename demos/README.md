@@ -12,27 +12,42 @@ demos/
     ├── setup-5g-supply-chain-demo.sh # Quick setup script
     ├── interactive-cypher-demo.sh    # Interactive query exploration
     ├── load-demo-data.cypher         # Sample data loading script
-    └── neo4j-browser-demo.cypher     # Browser visualization queries
+    └── 5g-supply-chain-knowledge-graph.cypher     # Sample knowledge graph queries
 ```
 
 ## Quick Start (5 minutes)
 
-### Option 1: Interactive Command-Line Demo
+This guide will get the complete graph analytics platform running on your local machine.
+
+### Prerequisites
+- Docker & Docker Compose
+
+### 1. Start the Platform
+This command starts all services, including the Neo4j database and the Java API. The first time you run this, Docker will build the necessary images.
+
 ```bash
-# Setup and explore interactively
-./demos/neo4j-graph-analytics/setup-5g-supply-chain-demo.sh
-./demos/neo4j-graph-analytics/interactive-cypher-demo.sh
+docker-compose up -d
 ```
 
-### Option 2: Neo4j Browser Visualization
-```bash
-# Setup data
-./demos/neo4j-graph-analytics/setup-5g-supply-chain-demo.sh
+### 2. Load Demo Data
+This script populates the Neo4j database with the 5G supply chain dataset.
 
-# Open browser interface
-open http://localhost:7474
-# Login: neo4j / password
-# Copy queries from: demos/neo4j-graph-analytics/neo4j-browser-demo.cypher
+```bash
+./demos/neo4j-graph-analytics/setup-5g-supply-chain-demo.sh
+```
+
+### 3. Explore the Graph
+You have two options for exploring the data:
+
+#### Option A: Neo4j Browser (Recommended)
+- **Access**: Open http://localhost:7474 in your web browser.
+- **Login**: Use `neo4j` for the username and `password` for the password.
+- **Queries**: Run the queries from `demos/neo4j-graph-analytics/5g-supply-chain-knowledge-graph.cypher` to visualize the supply chain network.
+
+#### Option B: Interactive Command-Line Demo
+For a guided tour through the data using Cypher queries in your terminal:
+```bash
+./demos/neo4j-graph-analytics/interactive-cypher-demo.sh
 ```
 
 ## Demo Capabilities
