@@ -4,6 +4,7 @@
 # Loads sample data and provides demo URLs
 
 set -e
+set -o pipefail
 
 echo "🚀 GRAPH ANALYTICS PLATFORM DEMO"
 echo "================================="
@@ -27,8 +28,15 @@ echo "✅ Neo4j is running"
 
 # Load demo data using cypher-shell
 echo "📊 Loading demo data..."
-docker exec supply-chain-neo4j cypher-shell -u neo4j -p password -f /dev/stdin < demos/neo4j-graph-analytics/load-demo-data.cypher
-echo "✅ Demo data loaded: 6 companies, 8 relationships"
+output=$(cat demos/neo4j-graph-analytics/load-demo-data.cypher | docker exec -i supply-chain-neo4j cypher-shell -u neo4j -p password --database neo4j --format plain)
+
+# Parse the output to extract counts
+company_count=$(echo "$output" | tail -1 | cut -d',' -f2 | tr -d ' ')
+rel_count_raw=$(echo "$output" | tail -1 | cut -d',' -f3 | tr -d ' ')
+rel_count=$((rel_count_raw / 2))
+
+echo "✅ Demo data loaded: $company_count companies, $rel_count relationships"
+
 
 echo ""
 echo "🎯 DEMO READY!"
